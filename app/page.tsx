@@ -1,101 +1,189 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useChat } from 'ai/react';
+import { useState, useEffect } from 'react';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import Markdown from 'react-markdown';
+import { MarkdownWrapper } from '@/components/ui/markdown';
+import remarkGfm from 'remark-gfm';
+import BlurFade from "@/components/ui/blur-fade";
+import Spinner from "@/components/spinner";
+import VercelLogo from "@/components/vercel";
+export default function Chat() {
+  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+    maxSteps: 5,
+  });
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
+  const [sessionId, setSessionId] = useState<string | null>(null);
+
+  const isGenerating =
+    isLoading &&
+    (!messages.length ||
+      messages[messages.length - 1].role !== 'assistant' ||
+      !messages[messages.length - 1].content);
+
+  useEffect(() => {
+    const lastMessage = messages[messages.length - 1];
+
+    if (isGenerating) {
+      setShowAlert(true);
+
+      // Check if any tool invocation has dataCollected = true
+      const dataCollected = lastMessage?.toolInvocations?.some(
+        invocation => 'result' in invocation && 
+        typeof invocation.result === 'object' &&
+        invocation.result !== null &&
+        'dataCollected' in invocation.result &&
+        invocation.result.dataCollected === true
+      );
+
+      if (dataCollected && !lastMessage.content) {
+        // The AI has collected data and is generating a response
+        setStatusMessage('The AI has collected data and is generating a response. Please wait.');
+      } else {
+        // The AI is currently processing the request
+        setStatusMessage('The AI is currently processing your request. Please wait.');
+      }
+
+      setSessionId(null);
+    } else {
+      setShowAlert(false);
+    }
+  }, [isGenerating, messages]);
+
+  useEffect(() => {
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage?.toolInvocations) {
+      for (const invocation of lastMessage.toolInvocations) {
+        if ('result' in invocation && invocation.result?.sessionId) {
+          setSessionId(invocation.result.sessionId);
+          break;
+        }
+      }
+    }
+  }, [messages]);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="flex flex-col min-h-screen bg-[#F3F4F6]">
+      <div className="fixed top-0 left-0 right-0 bg-[#F3F4F6] z-10">
+        <div className="w-full max-w-2xl mx-auto border-x-2 border-b-2 border-[#E5E7EB] bg-white">
+          <div className="px-4 py-4 flex justify-between items-center">
+            <a href="https://www.alexdphan.com" target="_blank" rel="noopener noreferrer" className="text-sm font-medium underline">Made by AP</a>
+            <h1 className="text-2xl font-bold flex items-center">
+              <a href="https://www.browserbase.com" target="_blank" rel="noopener noreferrer" className="mr-1">
+                <span>🅱️</span>
+              </a>
+              <span className="mx-1">x</span>
+              <a href="https://www.vercel.com" target="_blank" rel="noopener noreferrer">
+                <VercelLogo />
+              </a>
+            </h1>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
+      <div className="flex-grow flex flex-col w-full max-w-2xl mx-auto border-x-2 border-[#E5E7EB] px-4 bg-white mt-16">
+        <div className="flex-grow flex flex-col w-full max-w-xl mx-auto py-4 ">
+          {messages.map((m, index) => (
+            <div key={m.id} className="whitespace-pre-wrap">
+              {m.role === 'user' ? (
+                <>
+                  <strong className="block mb-0 text-xl pb-2">User:</strong>
+                  <p className="mt-0 pb-4 font-mono">{m.content}</p>
+                </>
+              ) : m.toolInvocations ? (
+                <BlurFade>
+                  <Alert className="my-4 border-[#E5E7EB]">
+                    <AlertDescription>
+                      {m.toolInvocations?.map((invocation, index) => {
+                        let content = '';
+                        if ('result' in invocation) {
+                          if (invocation.result?.sessionId) {
+                            content = `Session ID: ${invocation.result.sessionId}`;
+                          } else if (invocation.result?.content) {
+                            content = `Content: ${invocation.result.content}`;
+                          }
+                        }
+                        if (invocation.args?.debuggerFullscreenUrl) {
+                          return (
+                            <div key={index}>
+                              <iframe
+                                src={`${invocation.args.debuggerFullscreenUrl}&navBar=false`}
+                                className="w-full sm:h-72 h-52"
+                                title="Debugger"
+                                sandbox="allow-same-origin allow-scripts"
+                                allow="clipboard-read; clipboard-write"
+                              />
+                            </div>
+                          );
+                        }
+                        return content ? <pre key={index}>{content}</pre> : null;
+                      })}
+                    </AlertDescription>
+                  </Alert>
+                </BlurFade>
+              ) : (
+                <>
+                  <strong className="block text-xl pb-4">🅱️-AI:</strong>
+                  <div className="mb-4"></div>
+                  <div
+                    className={`font-mono prose prose-sm mt-0 leading-snug pb-8 ${
+                      index === messages.length - 1 && m.role === 'assistant' ? 'mb-20' : ''
+                    }`}
+                  >
+                    <MarkdownWrapper>
+                      <Markdown remarkPlugins={[remarkGfm]}>{m.content}</Markdown>
+                    </MarkdownWrapper>
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+
+          {showAlert && !sessionId && (
+            <BlurFade>
+              <Alert className="my-4 border-[#E5E7EB] mb-20">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <AlertTitle>
+                      {messages[messages.length - 1].toolInvocations
+                        ?.map((invocation) => {
+                          if ('result' in invocation) {
+                            return invocation.result?.toolName;
+                          }
+                          return invocation.args?.toolName;
+                        })
+                        .filter(Boolean)
+                        .join(', ')}
+                    </AlertTitle>
+                    <AlertDescription>{statusMessage}</AlertDescription>
+                  </div>
+                  <div role="status">
+                    <Spinner />
+                  </div>
+                </div>
+              </Alert>
+            </BlurFade>
+          )}
+        </div>
+      </div>
+
+      <div className="fixed bottom-0 left-0 right-0 ">
+        <div className="w-full max-w-2xl mx-auto px-4 py-8">
+          <div className="w-full max-w-xl mx-auto">
+            <form onSubmit={handleSubmit} className="w-full">
+              <input
+                className="w-full p-2 border border-[#E5E7EB] transition-all duration-200 ease-in-out shadow-md shadow-gray-300/50 focus:border-red-300 focus:shadow-lg focus:shadow-red-300/40 outline-none"
+                value={input}
+                placeholder="Ask anything..."
+                onChange={handleInputChange}
+              />
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
