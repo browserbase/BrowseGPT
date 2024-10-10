@@ -102,7 +102,7 @@ export async function POST(req: Request) {
             
             const text = results.map(item => `${item.title}\n${item.description}`).join('\n\n');
 
-            console.log('Generating text', text);
+            console.log('Generating the one and only response', text);
             const response = await generateText({
               model: openai('gpt-4-turbo'),
               prompt: `Evaluate the following web page content: ${text}`,
