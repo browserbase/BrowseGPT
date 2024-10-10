@@ -27,7 +27,7 @@ async function createSession() {
     },
     body: JSON.stringify({
       projectId: process.env.BROWSERBASE_PROJECT_ID as string,
-      keepAlive: true
+      // keepAlive: true
      }),
   });
   const data = await response.json();
