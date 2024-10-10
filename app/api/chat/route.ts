@@ -25,7 +25,10 @@ async function createSession() {
       "x-bb-api-key": process.env.BROWSERBASE_API_KEY as string,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ projectId: process.env.BROWSERBASE_PROJECT_ID as string }),
+    body: JSON.stringify({
+      projectId: process.env.BROWSERBASE_PROJECT_ID as string,
+      keepAlive: true
+     }),
   });
   const data = await response.json();
   return { id: data.id, debugUrl: data.debugUrl };
