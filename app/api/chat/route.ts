@@ -99,7 +99,6 @@ export async function POST(req: Request) {
             });
 
             console.log(JSON.stringify(results, null, 2));
-            
             const text = results.map(item => `${item.title}\n${item.description}`).join('\n\n');
 
             console.log('Generating the one and only response', text);

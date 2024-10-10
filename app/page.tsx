@@ -65,6 +65,10 @@ export default function Chat() {
     }
   }, [messages]);
 
+  useEffect(() => {
+    console.log('Messages:', messages);
+  }, [messages]);
+
   return (
     <div className="flex flex-col min-h-screen bg-[#F3F4F6]">
       <div className="fixed top-0 left-0 right-0 bg-[#F3F4F6] z-10">
