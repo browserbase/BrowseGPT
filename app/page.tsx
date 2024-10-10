@@ -119,7 +119,11 @@ export default function Chat() {
                             </div>
                           );
                         }
-                        return content ? <pre key={index}>{content}</pre> : null;
+                        return content ? (
+                          <div key={index} className="overflow-x-auto">
+                            <pre className="whitespace-pre-wrap break-all">{content}</pre>
+                          </div>
+                        ) : null;
                       })}
                     </AlertDescription>
                   </Alert>
