@@ -102,12 +102,12 @@ export async function POST(req: Request) {
             
             const text = results.map(item => `${item.title}\n${item.description}`).join('\n\n');
 
-            console.log('Generating text');
+            console.log('Generating text', text);
             const response = await generateText({
               model: openai('gpt-4-turbo'),
               prompt: `Evaluate the following web page content: ${text}`,
             });
-            console.log(response)
+            console.log("response made", response)
 
             console.log("toolName: Searching Google");
             return {
