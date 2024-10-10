@@ -3,8 +3,6 @@ import { streamText, convertToCoreMessages, tool, generateText } from 'ai';
 import { z } from 'zod';
 import { chromium } from 'playwright';
 
-export const maxDuration = 30;
-
 export async function getDebugUrl(id: string) {
   console.log('Requesting debug URL for session ID:', id);
   const response = await fetch(`https://www.browserbase.com/v1/sessions/${id}/debug`, {
