@@ -1,6 +1,6 @@
 'use client';
 
-import { useChat, Message } from 'ai/react';
+import { useChat } from 'ai/react';
 import { useState, useEffect } from 'react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import Markdown from 'react-markdown';
@@ -10,17 +10,8 @@ import BlurFade from "@/components/ui/blur-fade";
 import Spinner from "@/components/spinner";
 import VercelLogo from "@/components/vercel";
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
     maxSteps: 5,
-    api: '/api/chat',
-    onResponse: (response) => {
-      if (!response.ok) {
-        console.error('Response not OK:', response.status, response.statusText);
-      }
-    },
-    onFinish: (message: Message) => {
-      console.log('Chat finished. Last message:', message);
-    },
   });
 
   const [showAlert, setShowAlert] = useState(false);
@@ -73,17 +64,6 @@ export default function Chat() {
       }
     }
   }, [messages]);
-
-  useEffect(() => {
-    console.log('Messages:', messages);
-  }, [messages]);
-
-  useEffect(() => {
-    if (error) {
-      console.error('Error in chat:', error);
-      setStatusMessage('An error occurred. Please try again.');
-    }
-  }, [error]);
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F3F4F6]">

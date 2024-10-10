@@ -27,7 +27,7 @@ async function createSession() {
     },
     body: JSON.stringify({
       projectId: process.env.BROWSERBASE_PROJECT_ID as string,
-      // keepAlive: true
+      keepAlive: true
      }),
   });
   const data = await response.json();
@@ -99,14 +99,14 @@ export async function POST(req: Request) {
             });
 
             console.log(JSON.stringify(results, null, 2));
+            
             const text = results.map(item => `${item.title}\n${item.description}`).join('\n\n');
 
-            console.log('Generating the one and only response', text);
+            console.log('Generating text');
             const response = await generateText({
               model: openai('gpt-4-turbo'),
               prompt: `Evaluate the following web page content: ${text}`,
             });
-            console.log("response made", response)
 
             console.log("toolName: Searching Google");
             return {
