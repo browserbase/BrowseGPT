@@ -27,7 +27,7 @@ async function createSession() {
     },
     body: JSON.stringify({
       projectId: process.env.BROWSERBASE_PROJECT_ID as string,
-      // keepAlive: true
+      keepAlive: true
      }),
   });
   const data = await response.json();
@@ -35,6 +35,9 @@ async function createSession() {
 }
 
 // Main API route handler
+export const runtime = 'nodejs';
+export const maxDuration = 300; // Set max duration to 300 seconds (5 minutes)
+
 export async function POST(req: Request) {
   const { messages } = await req.json();
 
