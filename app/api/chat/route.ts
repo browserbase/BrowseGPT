@@ -2,6 +2,7 @@ import { openai } from '@ai-sdk/openai';
 import { streamText, convertToCoreMessages, tool, generateText } from 'ai';
 import { z } from 'zod';
 import { chromium } from 'playwright';
+import {anthropic} from '@ai-sdk/anthropic'
 
 // Helper functions (not exported)
 async function getDebugUrl(id: string) {
@@ -107,7 +108,8 @@ export async function POST(req: Request) {
 
             console.log('Generating text');
             const response = await generateText({
-              model: openai('gpt-4-turbo'),
+              // model: openai('gpt-4-turbo'),
+              model: anthropic('claude-3-5-sonnet-20240620'),
               prompt: `Evaluate the following web page content: ${text}`,
             });
 
@@ -159,7 +161,8 @@ export async function POST(req: Request) {
 
             console.log('Generating text');
             const response = await generateText({
-              model: openai('gpt-4-turbo'),
+              // model: openai('gpt-4-turbo'),
+              model: anthropic('claude-3-5-sonnet-20240620'),
               prompt: `Evaluate the following web page content: ${text}`,
             });
 
