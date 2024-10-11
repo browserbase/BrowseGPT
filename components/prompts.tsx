@@ -1,5 +1,6 @@
 import { MagicCard } from "@/components/ui/magic-card";
 import BlurFade from "@/components/ui/blur-fade";
+import { Chrome, Newspaper, Palmtree } from "lucide-react";
 
 // Update PromptCard to include onClick prop
 const PromptCard = ({ icon, text, index, onClick }: { icon: React.ReactNode; text: string; index: number; onClick: () => void }) => (
@@ -12,7 +13,7 @@ const PromptCard = ({ icon, text, index, onClick }: { icon: React.ReactNode; tex
       onClick={onClick} // Pass the onClick prop to MagicCard
     >
       <div className="flex flex-col h-full w-full p-1 sm:p-4">
-        <div className="mb-auto self-start">{icon}</div>
+        <div className="mb-auto self-start w-4 h-4 sm:w-6 sm:h-6 m-1 sm:m-0">{icon}</div>
         <p className="text-[10px] sm:text-sm lg:text-lg text-start mt-auto">{text}</p>
       </div>
     </MagicCard>
@@ -25,7 +26,7 @@ export function Prompts({ onPromptClick }: { onPromptClick: (text: string) => vo
     <div className="flex justify-center w-full">
       <div className="grid grid-cols-3 gap-6 sm:gap-7 max-w-[400px] sm:max-w-[600px] lg:max-w-[900px]">
         <PromptCard
-          icon={null}
+          icon={<Chrome className="w-full h-full text-red-500" />}
           text="Tell me about Browserbase"
           index={0}
           onClick={() => {
@@ -34,16 +35,16 @@ export function Prompts({ onPromptClick }: { onPromptClick: (text: string) => vo
           }}
         />
         <PromptCard
-          icon={null}
+          icon={<Newspaper className="w-full h-full text-orange-500" />}
           text="What's on Y Combinator"
           index={1}
           onClick={() => {
-            console.log("PromptCard clicked: What's on Y Combinator"); // Debug log
-            onPromptClick("What's on Y Combinator")
+            console.log("PromptCard clicked: What's the current news on https://news.ycombinator.com/"); // Debug log
+            onPromptClick("What's the top recent news about on https://news.ycombinator.com/")
           }}
         />
         <PromptCard
-          icon={null}
+          icon={<Palmtree className="w-full h-full text-green-500" />}
           text="Tell me fun activities in SF"
           index={2}
           onClick={() => {

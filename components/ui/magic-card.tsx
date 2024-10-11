@@ -9,7 +9,7 @@ export interface MagicCardProps extends React.HTMLAttributes<HTMLDivElement> {
   gradientSize?: number;
   gradientColor?: string;
   gradientOpacity?: number;
-  onClick?: () => void; // Add this line
+  onClick?: () => void;  
 }
 
 export function MagicCard({
@@ -18,7 +18,7 @@ export function MagicCard({
   gradientSize = 200,
   gradientColor = "#ff0000", 
   gradientOpacity = 1, 
-  onClick, // Add this line
+  onClick,  
 }: MagicCardProps) {
   const mouseX = useMotionValue(-gradientSize);
   const mouseY = useMotionValue(-gradientSize);

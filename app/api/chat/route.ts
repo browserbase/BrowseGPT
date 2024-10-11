@@ -3,6 +3,8 @@ import { streamText, convertToCoreMessages, tool, generateText } from 'ai';
 import { z } from 'zod';
 import { chromium } from 'playwright';
 import {anthropic} from '@ai-sdk/anthropic'
+import { Readability } from '@mozilla/readability';
+import { JSDOM } from 'jsdom';
 
 // Helper functions (not exported)
 async function getDebugUrl(id: string) {
@@ -152,12 +154,12 @@ export async function POST(req: Request) {
             await page.goto(url);
           
             console.log('Evaluating page content');
-            const readable: { title?: string; textContent?: string } =
-              await page.evaluate(`
-              import('https://cdn.skypack.dev/@mozilla/readability').then(readability => {
-                return new readability.Readability(document).parse()
-              })`);
-            const text = `${readable.title}\n${readable.textContent}`;
+            const content = await page.content();
+            const dom = new JSDOM(content);
+            const reader = new Readability(dom.window.document);
+            const article = reader.parse();
+
+            const text = `${article?.title || ''}\n${article?.textContent || ''}`;
 
             console.log('Generating text');
             const response = await generateText({

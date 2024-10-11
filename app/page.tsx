@@ -221,7 +221,7 @@ export default function Chat() {
 
         {/* Input form */}
         <div className="fixed bottom-0 left-0 right-0 z-20">
-          <div className="w-full max-w-2xl mx-auto px-4 py-8 border-x-2 border-[#E5E7EB] bg-white">
+          <div className="w-full max-w-2xl mx-auto px-4 py-8 border-x-2 border-[#E5E7EB] ">
             <div className="w-full max-w-xl mx-auto">
               <form onSubmit={handleSubmitWrapper} className="w-full relative">
                 <input
