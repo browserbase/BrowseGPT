@@ -116,7 +116,7 @@ export default function Chat() {
         <div className="flex-grow flex flex-col w-full max-w-2xl mx-auto border-x-2 border-[#E5E7EB] bg-white mt-16">
           <div className="flex-grow flex flex-col w-full max-w-xl mx-auto py-4 px-4"> {/* Added px-4 */}
             {!hasInteracted && messages.length === 0 ? (
-              <div className="flex-grow flex flex-col justify-start items-center text-center mt-64">
+              <div className="flex-grow flex flex-col justify-start items-center text-center mt-56">
                 <BlurFade>
                 <h2 className="sm:text-2xl font-bold mb-2 text-xl">Welcome</h2>
               
