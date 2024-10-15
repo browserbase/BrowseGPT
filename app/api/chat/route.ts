@@ -74,8 +74,7 @@ export async function POST(req: Request) {
         }),
         execute: async ({ query, sessionId }) => {
           try {
-            const debugUrl = await getDebugUrl(sessionId);
-        
+      
             const browser = await chromium.connectOverCDP(
               `wss://connect.browserbase.com?apiKey=${process.env.BROWSERBASE_API_KEY}&sessionId=${sessionId}`
             );
@@ -131,7 +130,6 @@ export async function POST(req: Request) {
         }),
         execute: async ({ url, sessionId }) => {
           try {
-            const debugUrl = await getDebugUrl(sessionId);
             
             const browser = await chromium.connectOverCDP(
               `wss://connect.browserbase.com?apiKey=${process.env.BROWSERBASE_API_KEY}&sessionId=${sessionId}`

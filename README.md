@@ -1,10 +1,16 @@
 # BrowserGPT
 
-BrowserGPT is a chatbot that allows you to search the web and get answers to your questions. It is built with [Vercel AI SDK](https://www.npmjs.com/package/ai) and [Browserbase](https://www.browserbase.com/).
+[BrowserGPT](https://browsergpt.dev) is a chat interface that allows you to search the web and get answers to your questions. It is built with [Vercel AI SDK](https://www.npmjs.com/package/ai) and [Browserbase](https://www.browserbase.com/).
+
+# Demo
+
+{insert gif here}
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository
+2. Add environment variables (see .env.template)
+3. Run the development server:
 
 ```bash
 npm run dev
@@ -22,8 +28,7 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 ## Learn More
 
-To learn more about Next.js and Browserbase, take a look at the following resources:
+To learn more about Vercel AI SDK and Browserbase, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Vercel AI SDK](https://www.npmjs.com/package/ai) - learn about Vercel AI SDK features and API.
 - [Browserbase](https://www.browserbase.com/) - offers a reliable, high performance serverless developer platform to run, manage, and monitor headless browsers at scale.
