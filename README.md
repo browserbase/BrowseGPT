@@ -4,7 +4,7 @@
 
 # Demo
 
-{insert gif here}
+![BrowseGPT Demo](./app/browsegpt.gif)
 
 ## Getting Started
 
