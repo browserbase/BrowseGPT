@@ -8,7 +8,6 @@ import { JSDOM } from 'jsdom';
 
 // Helper functions (not exported)
 async function getDebugUrl(id: string) {
-  console.log('Requesting debug URL for session ID:', id);
   const response = await fetch(`https://www.browserbase.com/v1/sessions/${id}/debug`, {
     method: "GET",
     headers: {
@@ -21,7 +20,6 @@ async function getDebugUrl(id: string) {
 }
 
 async function createSession() {
-  console.log('Creating new session...');
   const response = await fetch(`https://www.browserbase.com/v1/sessions`, {
     method: "POST",
     headers: {
@@ -55,7 +53,6 @@ export async function POST(req: Request) {
         execute: async () => {
           const session = await createSession();
           const debugUrl = await getDebugUrl(session.id);
-          console.log(session.id, debugUrl.debuggerFullscreenUrl);
           return { sessionId: session.id, debugUrl: debugUrl.debuggerFullscreenUrl, toolName: 'Creating a new session'};
         },
       }),
@@ -75,9 +72,7 @@ export async function POST(req: Request) {
         }),
         execute: async ({ query, sessionId }) => {
           try {
-            console.log('Created session with ID:', sessionId);
             const debugUrl = await getDebugUrl(sessionId);
-            console.log(debugUrl);
         
             const browser = await chromium.connectOverCDP(
               `wss://connect.browserbase.com?apiKey=${process.env.BROWSERBASE_API_KEY}&sessionId=${sessionId}`
@@ -85,14 +80,11 @@ export async function POST(req: Request) {
             const defaultContext = browser.contexts()[0];
             const page = defaultContext.pages()[0];
           
-            console.log('Google search:', query);
             await page.goto(`https://www.google.com/search?q=${encodeURIComponent(query)}`);
             await page.waitForTimeout(500);
             await page.keyboard.press('Enter');
             await page.waitForLoadState('load', { timeout: 10000 });
             
-            console.info("Success!");
-            console.log('Evaluating page content');
             await page.waitForSelector('.g');
 
             const results = await page.evaluate(() => {
@@ -103,19 +95,15 @@ export async function POST(req: Request) {
                 return { title, description };
               });
             });
-
-            console.log(JSON.stringify(results, null, 2));
             
             const text = results.map(item => `${item.title}\n${item.description}`).join('\n\n');
 
-            console.log('Generating text');
             const response = await generateText({
               // model: openai('gpt-4-turbo'),
               model: anthropic('claude-3-5-sonnet-20240620'),
               prompt: `Evaluate the following web page content: ${text}`,
             });
 
-            console.log("toolName: Searching Google");
             return {
               toolName: 'Searching Google',
               content: response.text,
@@ -143,33 +131,27 @@ export async function POST(req: Request) {
           try {
             const debugUrl = await getDebugUrl(sessionId);
             
-            console.log(debugUrl);
             const browser = await chromium.connectOverCDP(
               `wss://connect.browserbase.com?apiKey=${process.env.BROWSERBASE_API_KEY}&sessionId=${sessionId}`
             );
             const defaultContext = browser.contexts()[0];
             const page = defaultContext.pages()[0];
           
-            console.log('Navigating to URL:', url);
             await page.goto(url);
           
-            console.log('Evaluating page content');
             const content = await page.content();
             const dom = new JSDOM(content);
             const reader = new Readability(dom.window.document);
             const article = reader.parse();
-            console.log(article)
 
             const text = `${article?.title || ''}\n${article?.textContent || ''}`;
 
-            console.log('Generating text');
             const response = await generateText({
               // model: openai('gpt-4-turbo'),
               model: anthropic('claude-3-5-sonnet-20240620'),
               prompt: `Evaluate the following web page content: ${text}`,
             });
 
-            console.log('Returning response', response);
             return {
               toolName: 'Getting page content',
               content: response.text,

@@ -30,7 +30,6 @@ export function Prompts({ onPromptClick }: { onPromptClick: (text: string) => vo
           text="Tell me about Browserbase"
           index={0}
           onClick={() => {
-            console.log("PromptCard clicked: Tell me about Browserbase"); // Debug log
             onPromptClick("Tell me about Browserbase");
           }}
         />
@@ -39,7 +38,6 @@ export function Prompts({ onPromptClick }: { onPromptClick: (text: string) => vo
           text="What's on Y Combinator"
           index={1}
           onClick={() => {
-            console.log("PromptCard clicked: What's the current news on https://news.ycombinator.com/"); // Debug log
             onPromptClick("What's the top recent news about on https://news.ycombinator.com/")
           }}
         />
@@ -48,7 +46,6 @@ export function Prompts({ onPromptClick }: { onPromptClick: (text: string) => vo
           text="Tell me fun activities in SF"
           index={2}
           onClick={() => {
-            console.log("PromptCard clicked: Tell me fun activities in SF"); // Debug log
             onPromptClick("Tell me fun activities in SF")
           }}
         />
