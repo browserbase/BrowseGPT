@@ -36,7 +36,7 @@ async function createSession() {
 }
 
 // Main API route handler
-export const runtime = 'nodejs';
+// export const runtime = 'nodejs';
 export const maxDuration = 300; // Set max duration to 300 seconds (5 minutes)
 
 export async function POST(req: Request) {
@@ -45,6 +45,8 @@ export async function POST(req: Request) {
   const result = await streamText({
     experimental_toolCallStreaming: true,
     model: openai('gpt-4-turbo'),
+    // model: openai('gpt-4o'),
+    // model: anthropic('claude-3-5-sonnet-20240620'),
     messages: convertToCoreMessages(messages),
     tools: {
       createSession: tool({
