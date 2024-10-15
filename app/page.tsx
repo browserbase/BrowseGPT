@@ -120,7 +120,7 @@ export default function Chat() {
                 <BlurFade>
                 <h2 className="sm:text-2xl font-bold mb-2 text-xl">Welcome</h2>
               
-                <p className="sm:mb-10 mb-10 sm:text-sm text-xs">What web task can I conquer for you today?</p>
+                <p className="sm:mb-10 mb-8 sm:text-sm text-xs">What web task can I conquer for you today?</p>
                 </BlurFade>
                 <Prompts onPromptClick={handlePromptClick} />
               </div>
