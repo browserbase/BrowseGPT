@@ -7,7 +7,7 @@
 ## Getting Started
 
 1. Clone the repository
-2. Add environment variables (see .env.template)
+2. Add environment variables (see `.env.template`)
 3. Run the development server:
 
 ```bash
