@@ -47,7 +47,7 @@ export async function POST(req: Request) {
   const result = await streamText({
     experimental_toolCallStreaming: true,
     model: openai('gpt-4-turbo'),
-    messages: convertToCoreMessages(messages),
+    messages: convertToCoreMessages(mesages),
     tools: {
       createSession: tool({
         description: 'Create a new session',
@@ -158,6 +158,7 @@ export async function POST(req: Request) {
             const dom = new JSDOM(content);
             const reader = new Readability(dom.window.document);
             const article = reader.parse();
+            console.log(article)
 
             const text = `${article?.title || ''}\n${article?.textContent || ''}`;
 
