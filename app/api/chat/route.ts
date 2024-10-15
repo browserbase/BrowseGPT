@@ -47,7 +47,7 @@ export async function POST(req: Request) {
   const result = await streamText({
     experimental_toolCallStreaming: true,
     model: openai('gpt-4-turbo'),
-    messages: convertToCoreMessages(mesages),
+    messages: convertToCoreMessages(messages),
     tools: {
       createSession: tool({
         description: 'Create a new session',
