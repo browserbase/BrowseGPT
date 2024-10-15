@@ -6,12 +6,15 @@ import {anthropic} from '@ai-sdk/anthropic'
 import { Readability } from '@mozilla/readability';
 import { JSDOM } from 'jsdom';
 
+const bb_api_key = process.env.BROWSERBASE_API_KEY!
+const bb_project_id = process.env.BROWSERBASE_PROJECT_ID!
+
 // Helper functions (not exported)
 async function getDebugUrl(id: string) {
   const response = await fetch(`https://www.browserbase.com/v1/sessions/${id}/debug`, {
     method: "GET",
     headers: {
-      "x-bb-api-key": process.env.BROWSERBASE_API_KEY as string,
+      "x-bb-api-key": bb_api_key,
       "Content-Type": "application/json",
     },
   });
@@ -23,11 +26,11 @@ async function createSession() {
   const response = await fetch(`https://www.browserbase.com/v1/sessions`, {
     method: "POST",
     headers: {
-      "x-bb-api-key": process.env.BROWSERBASE_API_KEY as string,
+      "x-bb-api-key": bb_api_key,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      projectId: process.env.BROWSERBASE_PROJECT_ID as string,
+      projectId: bb_project_id,
       keepAlive: true
      }),
   });
@@ -76,7 +79,7 @@ export async function POST(req: Request) {
           try {
       
             const browser = await chromium.connectOverCDP(
-              `wss://connect.browserbase.com?apiKey=${process.env.BROWSERBASE_API_KEY}&sessionId=${sessionId}`
+              `wss://connect.browserbase.com?apiKey=${bb_api_key}&sessionId=${sessionId}`
             );
             const defaultContext = browser.contexts()[0];
             const page = defaultContext.pages()[0];
