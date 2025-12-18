@@ -47,7 +47,6 @@ export async function POST(req: Request) {
 
   const result = await streamText({
     experimental_toolCallStreaming: true,
-    // model: openai('gpt-4-turbo'),
     model: openai('gpt-4o'),
     messages: convertToCoreMessages(messages),
     tools: {
@@ -102,8 +101,7 @@ export async function POST(req: Request) {
             const text = results.map(item => `${item.title}\n${item.description}`).join('\n\n');
 
             const response = await generateText({
-              // model: openai('gpt-4-turbo'),
-              model: anthropic('claude-3-5-sonnet-20240620'),
+              model: openai('gpt-4o'),
               prompt: `Evaluate the following web page content: ${text}`,
             });
 
@@ -149,8 +147,7 @@ export async function POST(req: Request) {
             const text = `${article?.title || ''}\n${article?.textContent || ''}`;
 
             const response = await generateText({
-              // model: openai('gpt-4-turbo'),
-              model: anthropic('claude-3-5-sonnet-20240620'),
+              model: openai('gpt-4o'),
               prompt: `Evaluate the following web page content: ${text}`,
             });
 
