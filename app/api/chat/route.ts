@@ -2,7 +2,6 @@ import { openai } from '@ai-sdk/openai';
 import { streamText, convertToCoreMessages, tool, generateText } from 'ai';
 import { z } from 'zod';
 import { chromium } from 'playwright';
-import {anthropic} from '@ai-sdk/anthropic'
 import { Readability } from '@mozilla/readability';
 import { JSDOM } from 'jsdom';
 
