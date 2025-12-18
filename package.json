@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^0.0.51",
     "@ai-sdk/openai": "^0.0.66",
     "@headlessui/react": "^2.1.10",
     "@mozilla/readability": "^0.5.0",
