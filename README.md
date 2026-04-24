@@ -1,3 +1,5 @@
+> **This repository is no longer actively maintained.** The source code has been moved to [browserbase/gtm-demos](https://github.com/browserbase/gtm-demos/tree/main/apps/BrowseGPT).
+
 # BrowseGPT
 
 [BrowseGPT](https://browsegpt.dev) is a chat interface that allows you to search the web and get answers to your questions. It is built with [Vercel AI SDK](https://www.npmjs.com/package/ai) and [Browserbase](https://www.browserbase.com/).
